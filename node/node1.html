@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Node - First Steps</title>
+  <style>
+    body {
+      font-size: 1.2em;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .code {
+      background-color: lightgrey;
+      border: 3px solid black;
+      color: darkslategrey;
+      display: inline-block;
+      font-size: 1.2em;
+      margin: 0 20px;
+      padding: 5px 15px;
+      text-shadow: 1px 1px 20px blueviolet;
+    }
+
+    code {
+      background-color: lightsalmon;
+      padding: 0 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Node - First Steps</h1>
+
+  <p>The only tools that you need to work with node are a recent version of node.js and a text editor. Once you have
+    those, you are ready to begin. To start a new node project, you will need to go to your command prompt. Navigate to
+    or create a folder for your node project. Once inside the directory where you want your code to reside, type:</p>
+
+  <div class="code">npm init</div>
+
+  <p>You will be asked a series of questions about properties of your project (hit Enter to accept defaults), and your
+    selections will be written to a file named <code>package.json</code> (in the main project directory). Next, create a
+    <code>bin</code> folder, and add a file called <code>index.js</code> to this folder. Add the following lines of code
+    to this file:
+  </p>
+
+  <div class="code">#!/usr/bin/env node<br>
+    <br>
+    console.log('Hello world!');
+  </div>
+
+  <p>The first line that begins with <code>#!</code> is usually called a <em>shebang</em> This is normally only used on
+    Linux or UNIX operating systems to inform the system what type of script is included in the rest of the text file.
+    However, this first line is also required for node.js scripts to be installed and run properly on macOS and Windows.
+  </p>
+
+  <p>Since Javascript is interpreted, it needs an interpreter. You can run our Javascript file with node.js from the
+    command line with:</p>
+
+  <div class="code">node bin/index.js</div>
+
+  <p>Or alternatively (since index.js is default):</p>
+
+  <div class="code">node bin</div>
+
+  <p>By typing node, we are telling the shell how to run the script, but when you use a shebang this is included in the
+    script itself. When it has this, it can be run directly as if it was a binary:</p>
+
+  <div class="code">bin/index.js</div>
+
+  <p>It can also be executed from a bash script (.sh), such as (note the shebang specifying what to run this with):</p>
+
+  <div class="code">#!/bin/sh<br>
+    <br>
+    bin/index.js
+  </div>
+
+  <p>This could be in our root folder, and if we name it <code>run.sh</code> then we can call it like so (assuming bash
+    is set in your PATH):</p>
+
+  <div class="code">bash run.sh</div>
+
+  <p>Node (and browsers) will ignore the shebang as a comment if it is the first line of the file. By using
+    <code>#!/usr/bin/env node</code>, we're telling the OS to run <code>env</code>, and env will run node, and node will
+    in turn execute the script. The main use of env is to run a command in a modified environment. The emphasis here
+    being "a command" because env is almost always at /usr/bin/env while "a command" can be anything that's on the PATH
+    (in this case node - also putting bash and related utilities is useful too, if not necessary).
+  </p>
+
+  <p>Passing the <code>-S</code> option to env causes it to parse whatever comes after, which can be used to pass
+    parameters to the command (node for this discussion). While an in-depth discussion of that is beyond the scope of an
+    intro document, we will look at one example. In the bin folder, make a 2nd Javascript file called
+    <code>first.js</code>. It can have just a single line of code, <code>console.log('I got called first!');</code>.
+    Then, modify the shebang in index.js to read <code>#!/usr/bin/env -S node -r ./bin/first.js</code>. Using the
+    <code>-r</code> option of the node command causes another script to run before the current script. Now call index.js
+    by running <code>bash run.sh</code> from the project directory. Two observations after having done this (and being
+    frustrated a while). First, after the -r in this example, you must have ./ before bin/first.js. Don't ask me why,
+    but if you don't put it there it calls the 2nd script only and never comes back to the first (prints only "I got
+    called first"). Second, if you try to run index.js directly from node (as opposed to bash with a script), it will
+    ignore the shebang and just run the script (only "Hello World!").
+  </p>
+
+  <p>Again, note that if you run the script like <code>node bin/index.js</code>, node.js will not try to parse arguments
+    from the shebang. It'll just ignore it. It is the kernel which uses the shebang prior to running the file in order
+    to figure out how to run it. I tried to modify the .sh shebang to make these files executable without the bash
+    keyword (like above with node) but was unsuccessful. Another shebang that works fine and specifes bash (rather than
+    sh, but still have to call with bash...) is <code>#!/bin/bash</code>.</p>
+
+  <p>There are many more things you can do with env and node, such as setting environment variables, force-disabling
+    debugging for users, etc. As I said, this is an intro, but here is the <a
+      href="https://alexewerlof.medium.com/node-shebang-e1d4b02f731d">page</a> where I got a lot of this information
+    from, and that contains more.</p>
+
+  <hr>
+
+  <p>Let's go back to the start, and edit the package.json file that was generated when we ran npm init. Change the
+    <code>main</code> value to <code>bin/index.js</code>. Add a new keyword for <code>bin</code> with the text
+    <code>"hello": "./bin/index.js"</code>. The package.json file should now look like similar to the following:
+  </p>
+
+  <div class="code">
+    {<br>
+    &nbsp;&nbsp;"name": "first-steps",<br>
+    &nbsp;&nbsp;"version": "1.0.0",<br>
+    &nbsp;&nbsp;"description": "Program from first steps tutorial",<br>
+    &nbsp;&nbsp;"main": "bin/index.js",<br>
+    &nbsp;&nbsp;"scripts": {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;"test": "echo \"Error: no test specified\" && exit 1"<br>
+    &nbsp;&nbsp;},<br>
+    &nbsp;&nbsp;"author": "Steve Williams",<br>
+    &nbsp;&nbsp;"license": "ISC",<br>
+    &nbsp;&nbsp;"bin": {<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;"hello": "./bin/index.js"<br>
+    &nbsp;&nbsp;}<br>
+    }
+  </div>
+
+  <p>Due to the change we made to <code>main</code>, we can now run the script with <code>node .</code> from the main
+    project folder. However, our main goal is to be able to run our script from anywhere:</p>
+
+  <div class="code">npm install -g .</div>
+
+  <p>This installs your script "globally". Any commands listed in the new bin section of the package.json file will be
+    made available as command line applications. You can now run index.js by typing <code>hello</code> at the command
+    line - from anywhere. The file(s) referenced in bin have to start with <code>#!/usr/bin/env node</code> (no -S
+    options for env, etc.), otherwise the scripts are started without the node executable (so in index, change the
+    shebang to the standard one first, or you'll get some error about -S: I sure did). To uninstall your script, run
+    the command:</p>
+
+  <div class="code">npm uninstall -g .</div>
+
+  <p>You can list all globally installed node.js modules using:</p>
+
+  <div class="code"> npm ls -g --depth=0</div>
+
+  <p>More importantly, this shows you where these modules are installed at - it is not in the project directory.</p>
+
+  <hr>
+
+  <p>We can modify the color of text and the background with the package <b>chalk</b>. Additionally, we can add borders
+    around text with the <b>boxen</b> package. You can add these to the project with:</p>
+
+  <div class="code">npm install chalk boxen</div>
+
+  <p>This will create a folder called <code>node_modules</code>, where the packages (and others) are stored. It also
+    creates <code>package-lock.json</code>. This file is automatically generated for any operations where npm modifies
+    either the node_modules tree, or package.json. It describes the exact tree that was generated, such that subsequent
+    installs are able to generate identical trees, regardless of intermediate dependency updates. In the package.json
+    file, it also adds the packages as dependencies. In mine this was:</p>
+
+  <div class="code">
+    "dependencies": {<br>
+    &nbsp;&nbsp;"boxen": "^5.0.1",<br>
+    &nbsp;&nbsp;"chalk": "^4.1.2"<br>
+    }
+  </div>
+
+  <p>Now, let's put the following code in a new file, <code>bin/color-text.js</code>:</p>
+
+  <div class="code">
+    #!/usr/bin/env node<br>
+    <br>
+    const chalk = require('chalk');<br>
+    const boxen = require('boxen');<br>
+    <br>
+    const greeting = chalk.white.bold('Hello!');<br>
+    <br>
+    const boxenOptions = {<br>
+    &nbsp;&nbsp;padding: 1,<br>
+    &nbsp;&nbsp;margin: 1,<br>
+    &nbsp;&nbsp;borderStyle: 'round',<br>
+    &nbsp;&nbsp;borderColor: 'green',<br>
+    &nbsp;&nbsp;backgroundColor: '#555555'<br>
+    };<br>
+    <br>
+    const msgBox = boxen(greeting, boxenOptions);<br>
+    <br>
+    console.log(msgBox);<br>
+  </div>
+
+  <p>The message in the console should look similar to this:</p>
+
+  <div><img src="../images/chalk-boxen.png" alt="A box with a dotted green border, in the console"></div>
+
+  <p>Just for fun, I added <code>"color-text": "node bin/color-text.js"</code> to the <code>"scripts"</code> section in
+    my <code>package.json</code> file. I thought that maybe that would allow me to run this file like a simple command
+    by simply typing color-text - nope. It is still really easy to do, and doesn't require you to do a global install.
+    Use either of the following:</p>
+
+  <div class="code">
+    npm run-script color-text.js<br>
+    <br>
+    npm run color-text.js
+  </div>
+
+</body>
+
+</html>

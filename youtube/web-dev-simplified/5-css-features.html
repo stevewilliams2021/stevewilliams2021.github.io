@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>5 Must Know CSS Features That Almost Nobody Knows (Web Dev Simplified)</title>
+  <style>
+    body {
+      font-size: 1.3rem;
+    }
+
+    .card {
+      width: 400px;
+      background-color: white;
+      border: 1px solid black;
+    }
+
+    .header {
+      font-size: 2rem;
+      padding: .5rem;
+      background-color: blue;
+      color: white;
+    }
+
+    .body {
+      padding: 0.5rem;
+    }
+
+    p {
+      line-height: 1.5em;
+    }
+
+    code {
+      background-color: gray;
+    }
+
+    .header2 {
+      font-size: 2rem;
+      padding: .5rem;
+      background-color: blue;
+      color: white;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .header3 {
+      font-size: 2rem;
+      padding: .5rem;
+      background-color: blue;
+      color: white;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    #text-shadow-1 {
+      text-shadow: 0 0 1px red;
+    }
+
+    pre code {
+      background-color: initial;
+    }
+
+    #text-shadow-2 {
+      text-shadow: 0 0 10px red;
+    }
+
+    #text-shadow-3 {
+      text-shadow: 0 -20px 10px red;
+    }
+
+    #text-shadow-4 {
+      text-shadow: 0 -20px 1px red;
+    }
+
+    #text-shadow-5 {
+      text-shadow: 5px 5px 0 red;
+    }
+
+    .attempt1 {
+      text-align: center;
+      background-image: url("../../images/colored-background.jpg");
+    }
+
+    .attempt2 {
+      text-align: center;
+      background-image: url("../../images/colored-background.jpg");
+      background-clip: text;
+    }
+
+    .attempt3 {
+      text-align: center;
+      background-image: url("../../images/colored-background.jpg");
+      -webkit-background-clip: text;
+    }
+
+    .attempt4 {
+      text-align: center;
+      background-image: url("../../images/colored-background.jpg");
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .ellipse {
+      border-radius: 50%;
+    }
+
+    .pill {
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Page created 8/4/2021</h1>
+  <h2>1. Using text-overflow: ellipsis</h2>
+  <div class="card">
+    <div class="header">
+      I'm studying HTML, CSS, and JavaScript, before moving on to larger things.
+    </div>
+    <div class="body">
+      My goal here is to make the header above not wrap if it is larger than the container, nor overflow, but instead to
+      have an ellipsis end the part that you can see.
+    </div>
+  </div>
+  <p>There is a property called <code>text-overflow</code>, the defaut value for which is <code>clip</code>, which
+    causes content to be cut off if it overflows the container. Another setting this can take is <code>ellipsis</code>,
+    which will put triple dots at the end. If you only use this attribute by itself, nothing will happen because it only
+    causes the ellipsis to appear if the text overflows the container on the horizontal axis. By default text wraps, so
+    to make it not wrap we use <code>white-space: nowrap</code> (the default is <code>normal</code>, which breaks lines
+    as necessary to fill line boxes). Now it overflows the container.</p>
+  <div class="card">
+    <div class="header2">
+      I'm studying HTML, CSS, and JavaScript, before moving on to larger things.
+    </div>
+    <div class="body">
+      The text is now cut off with text-overflow: ellipsis and white-space: nowrap, but it's not displaying ... as we
+      want...
+    </div>
+  </div>
+  <p>The last step to make ellipsis work is to set <code>overflow: hidden</code>:</p>
+  <div class="card">
+    <div class="header3">
+      Now it is working like it is supposed to
+    </div>
+    <div class="body">
+      For ellipsis to work, the text must overflow horizontally, so it must not wrap and the overflow must be hidden.
+      This was accomplished with <code>text-overflow: ellipsis; white-space: nowrap; overflow: hidden;</code>
+    </div>
+  </div>
+  <h2>2. Text Shadow</h2>
+  <p id="text-shadow-1">The <code>text-shadow</code> attribute starts out with x and y offsets, then a blur value to
+    tell how much the shadow spreads out, and then a color. The CSS code for this text is:</p>
+  <pre><code class="language-css">
+    .text-shadow-1 {
+      text-shadow: 0 0 1px red;
+    }
+  </code></pre>
+  <p id="text-shadow-2">
+    This one has a nice 10px glow, otherwise the same.
+  </p>
+  <p id="text-shadow-3">
+    This one has y offset by -20px.
+  </p>
+  <p id="text-shadow-4">
+    Taking blur back down a bit to make it readable.
+  </p>
+  <p id="text-shadow-5">
+    Offset 5px on x and y, no blur, for drop shadow effect.
+  </p>
+  <h2>3. Background Clip Text</h2>
+  <p>The next effect we will consider is when you wish to put something behind your text, such as an image or video, and
+    make it play through the text. The first thing to do is to add the attribute
+    <code>background-image: url('myimg.jpg')</code>:
+  </p>
+  <h2 class="attempt1">Steve Williams</h2>
+  <p>This gives us text with a background image behind it, which is not what we want. Our goal is to only see the parts
+    of the picture that show through where the text are. We can set the attribute <code>background-clip: text</code> to
+    clip the picture by the text, but as you can see it still does not have the desired result:</p>
+  <h2 class="attempt2">Steve Williams</h2>
+  <p>In fact, there is no visible change at all, because in Chrome background-clip is only accessible if you do it with
+    the <code>-webkit-</code> prefix:</p>
+  <h2 class="attempt3">Steve Williams</h2>
+  <p>After saving with this prefix, it looks like our background completely disappears. It is actually only showing up
+    behind our text, but our text is black. If we make the color transparent with <code>color: transparent</code>, then
+    you can see the image through the text:</p>
+  <h2 class="attempt4">Steve Williams</h2>
+  <p>Lastly, you need to put a regular version of background-clip, in case the browser is not Chrome. Our full CSS ends
+    up being:</p>
+  <pre><code class="language-css">
+    h2 {
+      text-align: center;
+      background-image: url("../../images/colored-background.jpg");
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  </code></pre>
+  <h2>4. <code>all: initial</code></h2>
+  <p>Reset all styles to initial (defined in CSS specification) values. Can be useful to remove all styles from an
+    imported library and start from scratch. Discussed previously <a href="css-inheritance.html">here</a> will not
+    expand on it again.</p>
+  <h2>5. A note on border-radius</h2>
+  <p>Depending on how you set properties for the <code>border-radius</code> attribute, you may end up with an ellipse
+    shape or a pill shape. Setting it to a percent, like border-radius: 50%, attempts to create a circle, but if the
+    element getting the radius is not square then you get an ellipse. For example, <button
+      class="ellipse">Ellipse</button>. Generally this is not a shape we would actually want.</p>
+  <p>Instead, we'd rather just have the edges rounded with straight sections in between. If you wanted the radius to be
+    equivalent to the 50% in the example above, you would need to know the height of the element. Since this is not easy
+    to know, all we have to do is set border-radius to any value that is more than half the height. You can use a
+    ridiculous number like 9999px; to get the desired result: <button class="pill">Pill Shape</button>.</p>
+</body>
+
+</html>

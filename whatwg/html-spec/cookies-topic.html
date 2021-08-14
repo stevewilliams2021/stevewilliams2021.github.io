@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Discussion of Cookies</title>
+  <style>
+    body {
+      background-color: lightgrey;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      font-size: 1.2em;
+      margin: 10px 10px;
+      padding: 0;
+    }
+
+    .backgroundColorDiv {
+      background-image: radial-gradient(yellow, red, blue);
+      border: 5px solid black;
+      border-radius: 20px;
+    }
+
+    h1 {
+      background-color: transparent;
+      color: black;
+      font-size: 3em;
+      margin: 0;
+      padding: 5px;
+      text-align: center;
+      text-shadow: -2px -2px 5px purple, -3px -3px 10px white;
+    }
+
+    p {
+      line-height: 1.3em;
+    }
+
+    .code {
+      background-color: darkslategray;
+      border: 3px dashed peachpuff;
+      color: white;
+      margin-left: 20px;
+      padding: 5px;
+    }
+
+    em {
+      color: orangered;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="backgroundColorDiv">
+    <h1>A Discussion of Cookies</h1>
+  </div>
+
+  <p>Cookies were originally designed as a way to maintain state. A cookie is a small text file that is stored
+    on a user's machine by the browser. They can be set by a web server or page, but contain nothing executable. It is
+    then sent back with each subsequent request, based on a set of rules. Web servers can then use this information. For
+    example, many sites have you create a login. Once this process is successfully completed, you would typically set a
+    cookie to identify the user, and then they are free to navigate the site so long as that cookie is present and
+    validated.</p>
+
+  <p>Cookies can be stored by a web server by sending a HTTP header called Set-Cookie, which has the following format:
+  </p>
+
+  <div class="code">Set-Cookie: <em>value</em>[; <em>expires</em>=<i>date</i>i][; <em>domain</em>=<i>domain</i>][;
+    <em>path</em>=<i>path</i>][; <em>secure</em>]
+  </div>
+
+  <p>The <em>value</em> is typically a string in the format <i>name</i>=<i>value</i>. This is the format from the
+    specification, but browsers do no validation, so you could specifiy just a string with no equals sign and it would
+    still be stored. When a cookie is present and the rules allow, it is sent to the server with each request, stored in
+    an HTTP header called Cookie. It contains just the cookie value without any of the other options, as in:</p>
+
+  <div class="code">Cookie: value</div>
+
+  <p>The next options specified (not value) with Set-Cookie are for the browser's use only and are not retrievable once
+    set. The value is the exact value you set - it is not modified in any way. If there are multiple cookies for a given
+    request, they are separated by semicolons like so:</p>
+
+  <div class="code">Cookie: value1; value2; name1=value1</div>
+
+  <p>Cookies need not be URL-encoded, though that is the usual implementation. The original specification indicates that
+    only three types of characters must be encoded: semicolon, comma, and white space. Almost all implementations
+    perform some sort of encoding. For example, in value the name and value are typically encoded separately while the
+    equal sign is left alone.</p>
+
+  <p>Options after the cookie value are separted by a semicolon and space. Each specifies rules about when the cookie
+    should be sent to the server. The <em>expires</em> option indicates when the cookie should be deleted and no longer
+    sent to the server. The value for this option is a date in the format <i>Wdy, DD-Mon-YYYY HH:MM:SS GMT</i>, such as:
+  </p>
+
+  <div class="code">Set-Cookie: name=Steve; expires=Sat, 08 Aug 2021 09:06:45 GMT</div>
+
+  <p>Without the expires option, a cookie is good for only a single session (when the browser is closed). This is
+    why you’ll often see a checkbox when signing into a web application asking if you would like your login information
+    to be saved: if you select yes, then an expires option is attached to the login cookie.</p>
+
+  <p>The <em>domain</em> option indicates the domain(s) for which the cookie should be sent (by default, the host name
+    of the page that set it). The domain option can be used to widen the number of domains for which a cookie is sent.
+    For example, for a site that has many subdomains, the cookie can be set to the root site. The browser performs a
+    comparison of this value and the url, starting from the end of the url string (<i>tail comparison</i>). The value
+    set for domain can only be set to itself (default) or a parent domain.</p>
+
+  <p>The <em>path</em> option is similar to the domain option, but it indicates a URL path that must exist in a request
+    to send cookies. The comparison is performed left to right against the url, and can be any fragment of the path
+    (/mysite/thispath matches any URL that contains these). The default for this is the full URL that set the cookie,
+    and this is only checked after the domain option.</p>
+
+
+</body>
+
+</html>

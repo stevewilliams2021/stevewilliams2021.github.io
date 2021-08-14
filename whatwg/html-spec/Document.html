@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Document Class</title>
+  <link rel="stylesheet" href="../../styles/whatwg-styles.css">
+  <script src="../../scripts/whatwg-document-scripts.js"></script>
+</head>
+
+<body>
+  <div class="backgroundColorDiv">
+    <h1>The Document Class</h1>
+  </div>
+
+  <p>The <b>Document</b> class is represented by the <b>document</b> object in the DOM. In this page we will look
+    at properties and methods of this class. Also on this page, the style for all related topics is being designed.
+    Links that look like the main heading (<a class="siteDiv" href="">this</a>) are links to other pages on this site.
+    Regular looking <a href="">links</a> go to a different website for a discussion of the linked topic.</p>
+
+  <p class="defining">Sections like this define a new <code>property</code> or <code>method</code>.</p>
+
+  <p>Examples contain code and results, and may also have some explanation with them, like this.</p>
+
+  <div class="example">
+    <div class="code">Example code that is run in this browser is denoted in this manner.</div>
+
+    <div class="output">The results of code look normal and are immediately after the code., but still contained in the
+      same box.</div>
+  </div>
+
+  <p>I have restarted my research of the DOM from the <a href="https://html.spec.whatwg.org/multipage/">HTML Living
+      Standard</a>, reading IDL (Interface description language) in the text. IDL is a generic term - specifically, the
+    W3C selected <a href="https://en.wikipedia.org/wiki/Common_Object_Request_Broker_Architecture">OMG IDL</a> for
+    exposing the DOM of XML, HTML, and CSS documents. I am reading more in-depth about the <a
+      href="https://developer.mozilla.org/en-US/docs/Web/API/Document">Document</a> class, and others soon, on MDN Web
+    Docs. Here's their link to all <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web APIs</a>, where this
+    class and so many more can be found - have fun! &#x1f608</p>
+
+
+
+  <h2>The document Object</h2>
+
+  <p class="defining"><code>document.location</code> (<b>read-only</b>) - Returns a <a class="siteDiv"
+      href="Location.html">Location</a> object. Though you are getting a read-only object, you can also assign a <a
+      href="https://developer.mozilla.org/en-US/docs/Web/API/DOMString">DOMString</a> to it. If you assign another
+    string to it, the browser will load any website you assign. If this object is printed to screen, the ouput is equal
+    to <code>document.location.href</code> (it is a synonym for this).</p>
+
+  <div class="example">
+    <div class="code">
+      document.writeln(document.location);
+    </div>
+
+    <div class="output">
+      <script>
+        document.writeln(document.location);
+      </script>
+    </div>
+  </div>
+
+  <p>The links below go to my home page or youtube, but not in the usual fashion. Note that the first link below shows
+    in the preview (bottom left of window when you hover over link with mouse) that it is going to
+    https://www.youtube.com, but it goes to my home page instead when you click it... This was an interesting but kinda
+    scary technique I learned on stackoverflow. The 2nd link does the opposite - shows that it links to my site, but
+    goes to youtube. In both cases, for the link text, I chose to present where the link is actually going, but there's
+    no reason why someone has to. You <em>call and return the value from</em> a function that returns a boolean in the
+    onclick event of the link. In the body of the function you set document.location to some other href, returning false
+    if you want to override the link's href (if the function returns true, then the original href is used).</p>
+
+  <div class="example">
+    <div class="code">
+      &lt;style&gt;<br>
+      &nbsp;&nbsp;.siteDiv {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;-webkit-background-clip: text;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;background-clip: text;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;background-image: url('../images/moving-water.gif');<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;border-bottom: 2px solid black;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;color: transparent;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;text-shadow: 0 0 10px red;<br>
+      &nbsp;&nbsp;}<br>
+      &lt;/style&gt;<br>
+      <br>
+      &lt;script&gt;<br>
+      &nbsp;&nbsp;function jsRedirect() {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;document.location = '../../index.html';<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;return false;<br>
+      &nbsp;&nbsp;}<br>
+      &lt;/script&gt;<br>
+      <br>
+      &lt;a class="siteDiv" href="https://www.youtube.com" onclick="return jsRedirect();"&gt;My Home Page&lt;/a&gt;
+    </div>
+
+    <div class="output">
+      <a class="siteDiv" href="https://www.youtube.com" onclick="return jsRedirect();">My Home Page</a>
+    </div>
+  </div>
+
+  <div class="example">
+    <div class="code">
+      &lt;script&gt;<br>
+      &nbsp;&nbsp;function jsRedirect2() {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;document.location = 'https://www.youtube.com';<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;return false;<br>
+      &nbsp;&nbsp;}<br>
+      &lt;/script&gt;<br>
+      <br>
+      &lt;a href="../../index.html" onclick="return jsRedirect2();"&gt;Youtube&lt;/a&gt;
+    </div>
+
+    <div class="output">
+      <a href="../../index.html" onclick="return jsRedirect2();">Youtube</a>
+    </div>
+  </div>
+
+  <p>Unrelated to this topic, but something I learned during the writing of this section... I exported my style sheets
+    and scripts after initially doing them within the HTML file. The paths to external resources work fine in the
+    javascript files (path resolution is relative to the current path), but if you are using external css then the path
+    is relative to the style sheet itself for anything referred to inside of it.</p>
+
+
+
+  <hr>
+  <p class="defining"><code>document.domain</code> (<b>deprecated</b>) - Returns a <a
+      href="https://developer.mozilla.org/en-US/docs/Web/API/USVString">USVString</a> containing the full domain of the
+    document. Can also be used to set the domain, but only to the same or a parent domain. Use of the setter is
+    deprecated, as it can be a serious security risk.</p>
+
+  <div class="example">
+    <div class="code">
+      document.writeln(document.domain ? document.domain : 'Not from a site, probably local');
+    </div>
+
+    <div class="output">
+      <script>
+        document.writeln(document.domain ? document.domain : 'Not from a site, probably local');
+      </script>
+    </div>
+  </div>
+
+
+
+  <hr>
+  <p class="defining"><code>document.referrer</code> (<b>read-only</b>) - A USVString value that is the URI of the page
+    that linked you to this one. If there user navigated to the page directly, this is set to an empty string.</p>
+
+  <div class="example">
+    <div class="code">
+      document.writeln(document.referrer ? document.referrer : 'You didn\'t follow a link to get here');
+    </div>
+
+    <div class="output">
+      <script>
+        document.writeln(document.referrer ? document.referrer : 'You didn\'t follow a link to get here');
+      </script>
+    </div>
+  </div>
+
+
+
+  <hr>
+  <p class="defining"><code>document.cookie</code> - Lets you read and write cookies associated with the document.</p>
+
+
+</body>
+
+</html>

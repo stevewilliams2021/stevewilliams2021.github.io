@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Do You Really Understand CSS Inheritance? (Web Dev Simplified)</title>
+  <style>
+    body {
+      font-size: 1.3em;
+    }
+
+    a {
+      color: blue;
+    }
+
+    #button1 {
+      background-color: red;
+    }
+
+    #button2 {
+      background-color: red;
+      border: none;
+      font-size: 1rem;
+      font-family: Roboto;
+    }
+
+    #div1 {
+      background-color: green;
+    }
+
+    code {
+      font-size: 1.2em;
+      background-color: lightgray;
+    }
+
+    #div2 {
+      background-color: green;
+      display: initial;
+    }
+
+    div.pdiv {
+      background-color: moccasin;
+      font-size: 1.2em;
+      letter-spacing: 1pt;
+      padding: 5px;
+    }
+
+    #div3 {
+      background-color: green;
+      display: initial;
+    }
+
+    #div4 {
+      font-size: 2rem;
+    }
+
+    #div5 {
+      font-size: 2rem;
+      border: 1px solid black;
+    }
+
+    #div6 {
+      font-size: 2rem;
+      border: 1px solid black;
+    }
+
+    #div6 p {
+      border: inherit;
+    }
+
+    #button3 {
+      all: unset;
+      background-color: red;
+    }
+
+    #button4 {
+      all: unset;
+      border: revert;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Page created 8/4/2021</h1>
+  <p>Here's a button with default properties and background-color set to red: <button id="button1"
+      onclick="alert('I am red');">Button1</button>. It
+    does not have a very appealing look.</p>
+  <p>By getting rid of the border, setting a font-size of 1rem (not sure what this unit is but whatever for now), and a
+    font-family of Roboto, we end up with a slightly better version: <button id="button2"
+      onclick="alert('Hard to tell I got clicked because I have no border...');">Button2</button>. This,
+    however, is not really the best way to do this.</p>
+  <hr>
+  <div id="div1">This is a div</div>
+  <p>We will first discuss <code>display: initial</code>, which reveals something about the browser that many people do
+    not understand. Note our div above, which by default has <code>display: block</code> (div is a block element). You
+    would think since this is the default value, then if you were to set display to the value initial that it would be
+    the same as setting it to block - it is not. Here is what it looks like:
+  <div id="div2">This is a div</div>. Note that it is now being displayed inline, not block. You can verify this by
+  inspecting the element, going to the <b>Computed</b> tab, and searching for the display property - it is indeed
+  inline. The default for browsers is block, but the default in the CSS specification is inline (for the display
+  attribute, and this specific example, click <a
+    href="https://developer.mozilla.org/en-US/docs/Web/CSS/display#formal_definition">this</a>). Setting display to
+  initial sets it to the value defined in the specification. It gets the default of block from the <em>user agent
+    stylesheet</em>, which is whatever styles a particular browser applies. Fun fact though: on my browser this does not
+  display properly, nor format properly in VS Code with the <code>Alt+Shift+F</code> command.
+  </p>
+  <div class="pdiv">On my computer, though the 2nd div was inline, the browser basically inserts a new line before it
+    when it is contained within a &lt;p&gt; element. You can't put a &lt;div&gt; inside a &lt;p&gt; and get consistent
+    results from varioius browsers. Provide the browsers with valid HTML and they will behave better. Here is another
+    &lt;div&gt; that is identical to the last one: <div id="div3">This is a div</div>. This one is being displayed
+    properly, as a &lt;div&gt; can contain another &lt;div&gt; and get consistent results (and it autoformats correctly
+    in VS Code editor now as well).
+  </div>
+  <p>There are basically 3 tiers of CSS:
+  <ol>
+    <li>The <em>initial</em> styles defined in the formal CSS definition</li>
+    <li>Browser specific styes (user agent stylesheet, when you inspect)</li>
+    <li>Custom styles that you write in your own CSS</li>
+  </ol>
+  </p>
+  <p>Next we look at <code>display: inherit</code>. Consider the following:</p>
+  <div id="div4">
+    This is a div
+    <p>This is a p</p>
+  </div>
+  <p>We have a div, containing text and a child p element with text. Both have been given a font-size of 2rem. In the
+    CSS
+    specification (see earlier link, same section), you can see what properties are inherited by default from their
+    parents - font-size is one such property. Thus both text strings in our example have the 2rem applied (div text
+    because rule applies to it directly, the p text because it is inherited from the parent div definition). An example
+    of a property that does not inherit from its parent would be border (note no border around p, not an inherited
+    property):</p>
+  <div id="div5">
+    This is a div
+    <p>This is a p</p>
+  </div>
+  <p>But if we use <code>border: inherit</code> in the p contained in the div, we have:</p>
+  <div id="div6">
+    This is a div
+    <p>This is a p</p>
+  </div>
+  <p>Setting a property to inherit can make an element inherit values from its parent that it would normally not, as in
+    this example. Another useful place for using inherit is the font-family for buttons, which inherit a different style
+    from the rest of the page by default (from the user agent stylesheet). You can use <code>font-family: inherit</code>
+    on a button to make it inherit the same font style as the rest of your page. Note that inherit actually instructs
+    the element to inherit the style from its parent element.</p>
+  <p>The next value a property can be given is <code>unset</code>, which is just a combination of initial and inherit.
+    If the property by default inherits, then it sets the property to inherit. If the property does not inherit (such as
+    display), then it is set to initial. It is not generally all that useful, as you could just set a property to
+    initial or inherit. It does, however, have a use when you want to set a bunch of properties all at once to initial
+    or inherit. That is where the <code>all</code> property comes in. If we set <code>all: unset</code>, then all
+    properties that need to be set to initial will be put to initial, and all that are specified to inherit will
+    inherit. Consider our original button with all: unset (and red background): <button id="button3"
+      onclick="alert('My border, margins and padding are gone');">Button3</button>.</p>
+  <p>Using all with unset can be used to remove a lot of the default styles that you don't actually want. The last value
+    that is discussed is <code>revert</code>, which sets a value to the value in the user agent stylesheet. It could be
+    used after all: unset to restore a particular style but reset all others (<button id="button4"
+      onclick="alert('All unset, but got my border back!');">Button4</button>), but generally you'd be better off just
+    doing the unset then writing new rules. Use revert when you need to reliably restore a value to what it originally
+    looks like in the browser.</p>
+</body>
+
+</html>
